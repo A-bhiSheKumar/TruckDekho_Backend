@@ -3,6 +3,9 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const axios = require("axios");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 const UserModel = require("./models/Users");
 
 const app = express();
@@ -10,6 +13,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 const env = require("dotenv");
 env.config();
@@ -48,31 +52,55 @@ app.get("/", async (req, res) => {
   }
 });
 
-app.post("/register", (req, res) => {
-  UserModel.create(req.body)
+const maxAge = 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: maxAge,
+  });
+};
+
+app.post("/register", async (req, res) => {
+  const salt = await bcrypt.genSalt(10);
+  const secureHash = await bcrypt.hash(req.body.password, salt);
+  UserModel.create({
+    username: req.body.username,
+    password: secureHash,
+    email: req.body.email,
+  })
     .then((User) => {
-      res.json(User);
+      const token = createToken(User._id);
+      res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.status(200).json({ userId: User._id });
     })
     .catch((error) => {
       res.json(error);
     });
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  UserModel.findOne({ email: email })
-    .then((user) => {
-      if(user){
-        if (user.password === password) {
-          res.json("Logged in successfully!!");
-        }
-        else{
-          res.json("Password incorrect!!");
-        }
-      }else{
-        res.json("User not found!!");
+
+  await UserModel.findOne({ email: email }).then((user) => {
+    if (user) {
+      const passwordCompare = bcrypt.compare(user.password, password);
+      if (passwordCompare) {
+        const data = {
+          user: {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+          },
+        };
+        const token = createToken(user._id);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(200).json({user: user._id});
+      } else {
+        res.json("Password incorrect!!");
       }
-    })
+    } else {
+      res.json("User not found!!");
+    }
+  });
 });
 
 app.listen(port, () => {
