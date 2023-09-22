@@ -1,6 +1,5 @@
 const Trucks = [
   {
-    id: 1,
     name: "Mahindra Bolero Maxitruck Plus",
     company: "Mahindra",
     price: "7.15 Lakh",
@@ -8,7 +7,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Ashok Leyland Dost+",
     company: "Ashok Leyland",
     price: "8.20 Lakh",
@@ -16,7 +14,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Ashok Leyland BADA DOST",
     company: "Ashok Leyland",
     price: "8 Lakh",
@@ -24,7 +21,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Mahindra Bolero Camper",
     company: "Mahindra",
     price: "9.5 Lakh",
@@ -32,7 +28,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Mahindra Bolero Pikup 4X4",
     company: "Mahindra",
     price: "9.2 Lakh",
@@ -40,7 +35,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Mahindra Supro Minitruck",
     company: "Mahindra",
     price: "7.22 Lakh",
@@ -48,7 +42,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Maruti Suzuki Eeco Cargo",
     company: "Maruti Suzuki",
     price: "4.55 Lakh",
@@ -56,7 +49,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: " Tata Yodha Pickup",
     company: "Tata",
     price: "9.23 Lakh",
@@ -64,7 +56,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Isuzu S-CAB",
     company: "Isuzu",
     price: "10.05 Lakh",
@@ -72,7 +63,6 @@ const Trucks = [
     image: "https://www.cars24.com/blog/wp-content/uploads/2021/04/dost.jpg",
   },
   {
-    id: 1,
     name: "Mahindra Imperio",
     company: "Mahindra",
     price: "8.24 Lakh",
@@ -81,4 +71,4 @@ const Trucks = [
   },
 ];
 
-module.exports ={ Trucks};
+module.exports = { Trucks };
