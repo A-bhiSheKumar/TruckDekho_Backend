@@ -55,13 +55,12 @@ const Login = async (req, res, next) => {
     }
 
     const token = createToken(user._id);
-    res.cookie("jwt", token, { httpOnly: true });
-    res.status(200).json({ message: "Login successful" });
+    // res.cookie("jwt", token, { httpOnly: true });
+    res.status(200).json({ message: "Login successful", "token" :  token });
   } catch (error) {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
-
 const Logout = (req, res) => {
   try {
     res.cookie("jwt", "", { expires: new Date(0), httpOnly: true });

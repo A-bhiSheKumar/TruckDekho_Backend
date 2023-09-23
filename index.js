@@ -29,6 +29,27 @@ const connectToDatabase = async () => {
 };
 connectToDatabase();
 
+const verifyTokenMiddleware = (req, res, next) => {
+  const token = req.cookies.jwt;
+  
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Token is invalid or expired' });
+  }
+};
+
+app.get('/favorites', verifyTokenMiddleware, (req, res) => {
+  res.json({ message: 'This is a protected route (favorites)', user: req.user });
+});
+
+
 const options = {
   method: "GET",
   url: "https://cars-data3.p.rapidapi.com/cars-data",
@@ -54,8 +75,6 @@ app.get("/", async (req, res) => {
     console.error(error);
   }
 });
-
-app.use("/api/auth", authRoute);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
