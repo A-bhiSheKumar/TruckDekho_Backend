@@ -65,10 +65,10 @@ const Logout = (req, res) => {
   try {
     res.cookie("jwt", "", { expires: new Date(0), httpOnly: true });
     res.json({ message: "Logged Out" });
-    res.redirect("http://localhost:3000/login");
   } catch (error) {
     res.json(error);
   }
 };
 
 module.exports = { Register, Login, Logout };
+

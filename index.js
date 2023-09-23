@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
+const atlasRoute = require("./routes/atlas");
 
 const app = express();
 app.use(express.json());
@@ -14,8 +15,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/auth", authRoute);
+app.use("/api/atlas", atlasRoute);
 
 const env = require("dotenv");
+const TrucksModel = require("./models/Trucks");
 env.config();
 const port = process.env.PORT || 4000;
 
@@ -50,24 +53,8 @@ app.get('/favorites', verifyTokenMiddleware, (req, res) => {
 });
 
 
-const options = {
-  method: "GET",
-  url: "https://cars-data3.p.rapidapi.com/cars-data",
-  params: {
-    limit: "100",
-    skip: "0",
-  },
-  headers: {
-    "X-RapidAPI-Key": "6aaba333a5mshad82e54b81901e1p175197jsna0859336270b",
-    "X-RapidAPI-Host": "cars-data3.p.rapidapi.com",
-  },
-};
-
 app.get("/", async (req, res) => {
   try {
-    // const response = await axios.request(options);
-    // console.log(response.data);
-    // res.json(response.data);
     res.json({
       message: "Hello World",
     });
@@ -76,6 +63,19 @@ app.get("/", async (req, res) => {
   }
 });
 
+app.get('/products', async (req, res) => {
+  try {
+    const products = await TrucksModel.find({
+      price: /^([3-7](\.\d{1,2})?) Lakh$/,
+    });
+    res.json(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
