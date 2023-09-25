@@ -1,4 +1,3 @@
-
 const TrucksModel = require("../models/Trucks");
 
 const Filter = async (req, res) => {
@@ -17,7 +16,6 @@ const Filter = async (req, res) => {
       filter.company = req.query.company;
     }
     if (req.query.year) {
-      // const year = parseFloat(req.query.year);
       filter.year = filter.year || {};
       filter.year = req.query.year;
     }
@@ -30,4 +28,3 @@ const Filter = async (req, res) => {
 };
 
 module.exports = { Filter };
-
