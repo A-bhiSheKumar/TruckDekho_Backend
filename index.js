@@ -17,7 +17,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/atlas", atlasRoute);
 
 const env = require("dotenv");
-const TrucksModel = require("./models/Trucks");
 env.config();
 const port = process.env.PORT || 4000;
 
@@ -40,20 +39,6 @@ app.get("/", async (req, res) => {
     console.error(error);
   }
 });
-
-// app.get('/products', async (req, res) => {
-//   try {
-//     const products = await TrucksModel.find({
-//       price: {
-//         $regex: /^([3-9](\.\d{1,2})?) Lakh$/,
-//       },
-//     });
-//     res.json(products);
-//   } catch (error) {
-//     console.error('Error fetching products:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
