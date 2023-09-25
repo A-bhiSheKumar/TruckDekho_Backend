@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 const TrucksSchema = new mongoose.Schema({
