@@ -1,8 +1,7 @@
-
 const Truck = require("../models/Trucks");
 const User = require("../models/Users");
 
-const CompareProducts = async (req, res) => {
+const AddCompareProducts = async (req, res) => {
   const userId = req.params.userId;
   const truckId = req.params.truckId;
   try {
@@ -14,8 +13,7 @@ const CompareProducts = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
-
-    const isAlreadyInComparison = user.comparisonList.includes(truckId); 
+    const isAlreadyInComparison = user.comparisonList.includes(truckId);
     if (isAlreadyInComparison) {
       user.comparisonList.pull(truckId);
       await user.save();
@@ -36,5 +34,26 @@ const CompareProducts = async (req, res) => {
   }
 };
 
-module.exports = { CompareProducts };
+const GetCompareProducts = async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const comparisonList = user.comparisonList;
+    const truckInfoArray = [];
+    for (const truckId of comparisonList) {
+      const truck = await Truck.findById(truckId);
+      if (truck) {
+        truckInfoArray.push(truck);
+      }
+    }
+    res.status(200).json(truckInfoArray);
+  } catch (error) {
+    console.error("Error retrieving comparison list:", error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
+module.exports = { AddCompareProducts, GetCompareProducts };
