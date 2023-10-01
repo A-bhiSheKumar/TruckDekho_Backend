@@ -1,3 +1,4 @@
+
 const express = require("express");
 const router = express.Router();
 const {
@@ -9,3 +10,4 @@ router.post("/:userId/:truckId", AddCompareProducts);
 router.get("/:userId", GetCompareProducts);
 
 module.exports = router;
+

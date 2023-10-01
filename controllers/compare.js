@@ -1,3 +1,4 @@
+
 const Truck = require("../models/Trucks");
 const User = require("../models/Users");
 
@@ -57,3 +58,4 @@ const GetCompareProducts = async (req, res) => {
 };
 
 module.exports = { AddCompareProducts, GetCompareProducts };
+

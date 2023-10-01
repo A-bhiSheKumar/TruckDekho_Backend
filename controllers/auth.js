@@ -1,4 +1,3 @@
-
 const User = require("../models/Users");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -55,8 +54,8 @@ const Login = async (req, res, next) => {
     }
 
     const token = createToken(user._id);
-    // res.cookie("jwt", token, { httpOnly: true });
-    res.status(200).json({ message: "Login successful", "token" :  token });
+    res.cookie("jwt", token, { httpOnly: true });
+    res.status(200).json({ message: "Login successful", token: token });
   } catch (error) {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
@@ -70,5 +69,23 @@ const Logout = (req, res) => {
   }
 };
 
-module.exports = { Register, Login, Logout };
+const UpdatePassword = async (req, res) => {
+  const userId = req.params.userID;
+  const { currentPassword, newPassword } = req.body;
+  try {
+    const user = await User.findById(userId);
+    if (!(await bcrypt.compare(currentPassword, user.password))) {
+      res.status(404).json({ error: error.message });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const newhashedPassword = await bcrypt.hash(password, salt);
 
+    await User.findByIdAndUpdate(userId, { password: newhashedPassword });
+    req.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ error: error.message });
+  }
+};
+
+module.exports = { Register, Login, Logout, UpdatePassword };
