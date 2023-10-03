@@ -1,4 +1,3 @@
-
 const TrucksModel = require("../models/Trucks");
 
 const Filter = async (req, res) => {
@@ -17,8 +16,17 @@ const Filter = async (req, res) => {
       filter.company = req.query.company;
     }
     if (req.query.year) {
-      filter.year = filter.year || {};
       filter.year = req.query.year;
+    }
+    if (req.query.Gross_vehicle_weight) {
+      filter.Gross_vehicle_weight = req.query.Gross_vehicle_weight;
+      console.log(Gross_vehicle_weight);
+    }
+    if (req.query.payload) {
+      filter.payload = req.query.payload;
+    }
+    if (req.query.bodylength) {
+      filter.bodylength = req.query.bodylength;
     }
     const products = await TrucksModel.find(filter);
     res.json(products);
@@ -29,4 +37,3 @@ const Filter = async (req, res) => {
 };
 
 module.exports = { Filter };
-

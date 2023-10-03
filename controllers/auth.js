@@ -8,7 +8,6 @@ const createToken = (id) => {
   });
 };
 
-
 const Register = async (req, res) => {
   try {
     const { username, email, password, mobile } = req.body;
@@ -36,17 +35,26 @@ const Register = async (req, res) => {
 
 const Login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const { mobile, email, password } = req.body;
+
+    if (!email && !mobile) {
+      return res
+        .status(400)
+        .json({
+          message: "Either email or mobile number is required for login",
+        });
+    }
+
+    const user = await User.findOne({ $or: [{ email }, { mobile }] });
 
     if (!user) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: `Invalid ${email}${mobile} or password` });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: `Invalid ${email}${mobile} or password` });
     }
 
     const token = createToken(user._id);
@@ -86,4 +94,3 @@ const UpdatePassword = async (req, res) => {
 };
 
 module.exports = { Register, Login, Logout, UpdatePassword };
-

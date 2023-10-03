@@ -2,6 +2,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const TrucksModel = require("./models/Trucks");
 const cookieParser = require("cookie-parser");
 const authRoute = require("./routes/auth");
 const atlasRoute = require("./routes/atlas");
@@ -45,7 +46,6 @@ app.get("/", async (req, res) => {
   }
 });
 
-
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
@@ -57,4 +57,3 @@ app.listen(port, () => {
 // {
 //   "inputotp": ""
 // }
-
