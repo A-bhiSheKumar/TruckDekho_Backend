@@ -8,15 +8,10 @@ const createToken = (id) => {
   });
 };
 
+
 const Register = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-
-    // Check if the email is already registered
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "Email already registered" });
-    }
+    const { username, email, password, mobile } = req.body;
 
     // Hash the password
     const salt = await bcrypt.genSalt(10);
@@ -26,6 +21,7 @@ const Register = async (req, res) => {
     const newUser = new User({
       username,
       email,
+      mobile,
       password: hashedPassword,
     });
 
@@ -60,6 +56,7 @@ const Login = async (req, res, next) => {
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
+
 const Logout = (req, res) => {
   try {
     res.cookie("jwt", "", { expires: new Date(0), httpOnly: true });
@@ -89,3 +86,4 @@ const UpdatePassword = async (req, res) => {
 };
 
 module.exports = { Register, Login, Logout, UpdatePassword };
+

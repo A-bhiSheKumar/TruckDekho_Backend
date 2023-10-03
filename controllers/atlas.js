@@ -1,3 +1,4 @@
+
 const TrucksModel = require("../models/Trucks");
 
 const Filter = async (req, res) => {
@@ -28,3 +29,4 @@ const Filter = async (req, res) => {
 };
 
 module.exports = { Filter };
+
