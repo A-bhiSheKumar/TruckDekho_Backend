@@ -20,7 +20,6 @@ const Filter = async (req, res) => {
     }
     if (req.query.Gross_vehicle_weight) {
       filter.Gross_vehicle_weight = req.query.Gross_vehicle_weight;
-      console.log(Gross_vehicle_weight);
     }
     if (req.query.payload) {
       filter.payload = req.query.payload;
