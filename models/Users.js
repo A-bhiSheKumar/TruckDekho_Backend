@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
   mobile: {
     type: String,
     unique: true,
+    required: true,
     validate: {
       validator: function (v) {
         return v.length === 12;
@@ -34,15 +35,6 @@ const UserSchema = new mongoose.Schema({
     ],
     default: [],
   },
-});
-
-UserSchema.pre("validate", function (next) {
-  if (!this.email && !this.mobile) {
-    const error = new Error("At least one of email or mobile is required.");
-    next(error);
-  } else {
-    next();
-  }
 });
 
 const UserModel = mongoose.model("User", UserSchema);

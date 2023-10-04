@@ -38,23 +38,25 @@ const Login = async (req, res, next) => {
     const { mobile, email, password } = req.body;
 
     if (!email && !mobile) {
-      return res
-        .status(400)
-        .json({
-          message: "Either email or mobile number is required for login",
-        });
+      return res.status(400).json({
+        message: "Either email or mobile number is required for login",
+      });
     }
 
-    const user = await User.findOne({ $or: [{ email }, { mobile }] });
+    const user = await User.findOne({ mobile });
 
     if (!user) {
-      return res.status(401).json({ message: `Invalid ${email}${mobile} or password` });
+      return res
+        .status(401)
+        .json({ message: `Invalid ${mobile} or password` });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(401).json({ message: `Invalid ${email}${mobile} or password` });
+      return res
+        .status(401)
+        .json({ message: `Invalid ${mobile} or password` });
     }
 
     const token = createToken(user._id);
