@@ -1,4 +1,3 @@
-
 const axios = require("axios");
 const speakeasy = require("speakeasy");
 const User = require("../models/Users");
@@ -7,7 +6,7 @@ const apiUrl = "https://apitxt.com/api/sendOTP/";
 const authkey = "SEdFVFgraDhkRWM2RzhxbGhPMGIvQT09";
 var otp = "";
 var otpSecret1 = "Sidhant";
-// 918923741802
+
 const generateOTP1 = () => {
   return speakeasy.totp({
     secret: otpSecret1,
@@ -23,12 +22,13 @@ const generateOTP2 = () => {
   });
 };
 
-
 const SendMobileOTP = async (req, res) => {
-  const {mobile} = req.body;
+  const { mobile } = req.body;
   const existingUserByMobile = await User.findOne({ mobile });
   if (existingUserByMobile) {
-    return res.status(400).json({ message: "Mobile number already registered" });
+    return res
+      .status(400)
+      .json({ message: "Mobile number already registered" });
   }
   try {
     const mobile = req.body.mobile;
@@ -58,8 +58,8 @@ const VerifyMobileOTP = async (req, res) => {
   try {
     if (inputotp === otp) {
       console.log("Otp Verified successfully");
-        otp = generateOTP2();
-        console.log(otp);
+      otp = generateOTP2();
+      console.log(otp);
       res.status(200).json({ message: "Otp Verified successfully" });
     } else {
       res.status(401).json({ error: "Invalid OTP" });

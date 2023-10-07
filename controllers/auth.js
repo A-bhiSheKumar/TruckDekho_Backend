@@ -46,17 +46,13 @@ const Login = async (req, res, next) => {
     const user = await User.findOne({ mobile });
 
     if (!user) {
-      return res
-        .status(401)
-        .json({ message: `Invalid ${mobile} or password` });
+      return res.status(401).json({ message: `Invalid ${mobile} or password` });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res
-        .status(401)
-        .json({ message: `Invalid ${mobile} or password` });
+      return res.status(401).json({ message: `Invalid ${mobile} or password` });
     }
 
     const token = createToken(user._id);

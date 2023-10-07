@@ -3,7 +3,7 @@ const TrucksModel = require("../models/Trucks");
 const Filter = async (req, res) => {
   try {
     const filter = {};
-
+    
     if (req.query.minPrice) {
       filter.price = filter.price || {};
       filter.price.$gte = req.query.minPrice;
